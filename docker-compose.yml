@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  simulator:
+    networks:
+      - default
+    build: ./go-simulator-server/
+    container_name: simulator
+    volumes:
+      - ./go-simulator-server/:/go-simulator-server/
+    extra_hosts: # Endereço de comunicação entre os serviços com Docker
+      - "host.docker.internal:172.17.0.1"
+
+networks:
+  default:
+    external:
+      name: kafka_default
