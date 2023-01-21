@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nest-api:
+    build: .
+    # Arquivo de comandos bash que vai ser executado ao rodar o container (automatiza processos de npm install, npm start etc.)
+    # Rodar comando: chmod +x ./nest-api/.docker/entrypoint.sh antes do docker-compose-up para autorizar o bash script
+    entrypoint: /nest-api/.docker/entrypoint.sh 
+    container_name: nest-api
+    volumes:
+      - .:/nest-api/
+    ports:
+      - 3001:3000
+    depends_on:
+      - my-mongo
+  my-mongo:
+    image: mongo:4.4.4
+    restart: always # Tenta reiniciar sempre que dá um erro no container
+    volumes:
+      - ./.docker/dbdata:/data/my-mongo # Espelha os dados do banco (armazena)
+      - ./.docker/mongo:/docker-entrypoint-initdb.d # Script que executa ao iniciar o container define o banco "nest" como padrão
+   # container_name: mongo-db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=nest
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=my-mongo
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=root
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=root
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=root
+    depends_on:
+      - my-mongo
