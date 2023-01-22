@@ -16,11 +16,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             transport: Transport.KAFKA,
             options: {
               client: {
-                clientId: process.env.KAFKA_CLIENT_ID,
-                brokers: [process.env.KAFKA_BROKER]
+                clientId: process.env.KAFKA_CLIENT_ID, // ID declarado do Client (app em Nest) a conectar com o Kafka 
+                brokers: [process.env.KAFKA_BROKER] // Máquinas (brokers) do kafka a conectar
               },
               consumer: {
-                groupId: //? Recomendado nome aleatório
+                groupId: //? Grupo de consumidor em que o app em Nest entrará (Recomendado nome aleatório)
                   !process.env.KAFKA_CONSUMER_GROUP_ID ||
                   process.env.KAFKA_CONSUMER_GROUP_ID === ''
                     ? 'my-consumer-' + Math.random()

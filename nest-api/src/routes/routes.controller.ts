@@ -21,8 +21,7 @@ export class RoutesController implements OnModuleInit {
 
   constructor(
     private readonly routesService: RoutesService,
-    @Inject('KAFKA_SERVICE')
-    private kafkaClient: ClientKafka
+    @Inject('KAFKA_SERVICE') private kafkaClient: ClientKafka
   ) {}
 
   @Post()
@@ -64,11 +63,11 @@ export class RoutesController implements OnModuleInit {
           value: JSON.stringify({ routeId: id, clientId: ''})
         }
       ]
-    })
+    }) 
   }
 
   @MessagePattern('route.new-position')
   consumeNewPosition(@Payload() message: {value: {routeId: string, clientId: string, positions: [number, number], finished: boolean}}) {
-    console.log(message)
+    console.log(message.value)
   }
 }

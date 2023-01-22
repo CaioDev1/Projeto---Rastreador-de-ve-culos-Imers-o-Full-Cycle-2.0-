@@ -19,7 +19,6 @@ services:
     volumes:
       - ./.docker/dbdata:/data/my-mongo # Espelha os dados do banco (armazena)
       - ./.docker/mongo:/docker-entrypoint-initdb.d # Script que executa ao iniciar o container define o banco "nest" como padrão
-   # container_name: mongo-db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
